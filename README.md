@@ -67,5 +67,6 @@ logger:
     custom_components.oxygen_easy: debug
 ```
 
-Then reload the integration. Home Assistant diagnostics intentionally include
-only device metadata and available parameter IDs.
+Then reload the integration. Home Assistant diagnostics include connection and
+firmware metadata plus available parameter IDs, but no account details, custom
+names, installation IDs, or controller serial numbers.

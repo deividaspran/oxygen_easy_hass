@@ -7,40 +7,35 @@ from typing import Any
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .const import CONF_PASSWORD, CONF_USERNAME, DOMAIN
+from .const import DOMAIN
 from .coordinator import OxygenCoordinator
 
 
 async def async_get_config_entry_diagnostics(
     hass: HomeAssistant, entry: ConfigEntry
 ) -> dict[str, Any]:
-    """Return useful state without passwords, tokens, or AWS credentials."""
+    """Return useful state without account or device identifiers."""
     coordinator: OxygenCoordinator = hass.data[DOMAIN][entry.entry_id]
     data = coordinator.data
     return {
-        "config_entry": {
-            key: "**REDACTED**" if key in (CONF_PASSWORD, CONF_USERNAME) else value
-            for key, value in entry.data.items()
-        },
-        "installations": {
-            installation_id: {
-                "name": item.name,
-                "custom_name": item.custom_name,
+        "configured_fields": sorted(entry.data),
+        "installations": [
+            {
                 "connected_at_discovery": item.connected,
                 "hardware_version": item.hardware_version,
                 "software_version": item.software_version,
             }
-            for installation_id, item in data.installations.items()
-        },
-        "components": {
-            serial: {
-                "installation_id": component.installation_id,
+            for item in data.installations.values()
+        ],
+        "components": [
+            {
                 "type": component.component_type,
+                "manufacturer": component.manufacturer,
                 "hardware_version": component.hardware_version,
                 "software_version": component.software_version,
-                "available_parameters": sorted(data.values.get(serial, {})),
+                "available_parameters": sorted(data.values.get(component.serial, {})),
             }
-            for serial, component in data.components.items()
-        },
+            for component in data.components.values()
+        ],
         "last_update_success": coordinator.last_update_success,
     }
