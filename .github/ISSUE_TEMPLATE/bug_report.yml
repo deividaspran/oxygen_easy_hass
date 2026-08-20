@@ -20,14 +20,14 @@ body:
     id: integration_version
     attributes:
       label: Oxygen Easy integration version
-      placeholder: 0.1.0
+      placeholder: 0.1.1
     validations:
       required: true
   - type: input
     id: controller
     attributes:
       label: Controller model and firmware
-      placeholder: ecoVENT MINI OEM, H3.4.0 / S001.44
+      placeholder: ecoVENT MINI OEM, hardware version / software version
   - type: textarea
     id: problem
     attributes:
