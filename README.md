@@ -56,6 +56,8 @@ same UI configuration steps.
 - Filter values are exposed as **filter condition** because the cloud reports a
   percentage but does not label its direction unambiguously in the protocol.
 - This project is not affiliated with Oxygen or Plum.
+- The OXYGEN name and logo are trademarks of OXYGEN GROUP, UAB. The bundled
+  brand assets are used only to identify compatible products.
 
 ## Troubleshooting
 
