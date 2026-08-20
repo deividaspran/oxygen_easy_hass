@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest an improvement or additional Oxygen controller capability
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What would you like to accomplish in Home Assistant?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the entities, controls, or automation behavior expected.
+    validations:
+      required: true
+  - type: input
+    id: controller
+    attributes:
+      label: Controller model and firmware
+      placeholder: ecoVENT MINI OEM, H3.4.0 / S001.44
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues for a similar request.
+          required: true

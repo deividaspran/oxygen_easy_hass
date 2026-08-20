@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Local credentials and environment files
+.env
+.env.*
+!.env.example
+
+# Test and coverage output
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Build and release artifacts
+build/
+dist/
+*.egg-info/
+*.zip
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store

@@ -1,0 +1,62 @@
+name: Bug report
+description: Report a reproducible problem with the Oxygen Easy integration
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Oxygen Easy. Never include passwords,
+        Cognito tokens, AWS credentials, or signed MQTT URLs.
+  - type: input
+    id: home_assistant_version
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.8.2
+    validations:
+      required: true
+  - type: input
+    id: integration_version
+    attributes:
+      label: Oxygen Easy integration version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: controller
+    attributes:
+      label: Controller model and firmware
+      placeholder: ecoVENT MINI OEM, H3.4.0 / S001.44
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or diagnostics
+      description: Remove personal information and secrets before posting.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed credentials, tokens, and signed URLs.
+          required: true

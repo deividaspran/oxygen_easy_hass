@@ -1,0 +1,14 @@
+{
+  "domain": "oxygen_easy",
+  "name": "Oxygen Easy",
+  "codeowners": ["@deividaspran"],
+  "config_flow": true,
+  "documentation": "https://github.com/deividaspran/oxygen_easy_hass",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/deividaspran/oxygen_easy_hass/issues",
+  "requirements": [
+    "awsiotsdk==1.31.0",
+    "pycognito==2024.5.1"
+  ],
+  "version": "0.1.0"
+}

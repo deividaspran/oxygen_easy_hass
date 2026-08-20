@@ -1,0 +1,67 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Oxygen Easy",
+        "description": "Enter the same credentials you use in the Oxygen Easy app.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reconnect Oxygen Easy",
+        "description": "Enter the current Oxygen Easy password.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to Oxygen Easy",
+      "invalid_auth": "Invalid email or password",
+      "no_installations": "This account has no Oxygen installations",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This Oxygen Easy account is already configured",
+      "reauth_successful": "Oxygen Easy was reconnected"
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "automatic_mode": {"name": "Automatic mode"},
+      "bypass_active": {"name": "Bypass active"},
+      "schedule_active": {"name": "Schedule active"}
+    },
+    "select": {
+      "fan_level": {
+        "name": "Fan level",
+        "state": {
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High",
+          "paused": "Paused"
+        }
+      }
+    },
+    "sensor": {
+      "bypass_opening": {"name": "Bypass opening"},
+      "co2": {"name": "CO₂"},
+      "exhaust_temperature": {"name": "Exhaust temperature"},
+      "extract_airflow": {"name": "Extract airflow"},
+      "extract_fan": {"name": "Extract fan"},
+      "extract_filter": {"name": "Extract filter condition"},
+      "extract_temperature": {"name": "Extract temperature"},
+      "humidity": {"name": "Humidity"},
+      "outdoor_temperature": {"name": "Outdoor temperature"},
+      "supply_airflow": {"name": "Supply airflow"},
+      "supply_fan": {"name": "Supply fan"},
+      "supply_filter": {"name": "Supply filter condition"},
+      "supply_temperature": {"name": "Supply temperature"}
+    },
+    "switch": {
+      "power": {"name": "Power"}
+    }
+  }
+}
