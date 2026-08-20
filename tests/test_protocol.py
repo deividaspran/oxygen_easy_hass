@@ -63,3 +63,23 @@ def test_modification_status() -> None:
     }
 
     assert _modification_status(response, "controller-1", "u7074") == "16"
+
+
+def test_modification_status_normalizes_numeric_component_id() -> None:
+    """Firmware may encode an otherwise identical component ID as a number."""
+    response = {
+        "transactionId": "3",
+        "operations": [
+            {
+                "name": "PARAMS_MODIFICATION",
+                "targets": [
+                    {
+                        "component": 12345,
+                        "parameters": {"u81": "0"},
+                    }
+                ],
+            }
+        ],
+    }
+
+    assert _modification_status(response, "12345", "u81") == "0"

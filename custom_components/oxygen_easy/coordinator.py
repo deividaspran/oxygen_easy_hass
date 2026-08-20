@@ -178,7 +178,8 @@ def _optional_string(value: Any) -> str | None:
 def _modification_status(document: Any, serial: str, uid: str) -> str | None:
     """Find a parameter status without depending on response ordering."""
     if isinstance(document, dict):
-        if document.get("component") == serial:
+        component = document.get("component")
+        if component is not None and str(component) == serial:
             parameters = document.get("parameters")
             if isinstance(parameters, dict) and uid in parameters:
                 return str(parameters[uid])
