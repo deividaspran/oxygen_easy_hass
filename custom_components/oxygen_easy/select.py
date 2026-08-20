@@ -13,13 +13,18 @@ from .coordinator import OxygenCoordinator
 from .entity import OxygenEntity
 from .mqtt import OxygenMqttError
 
-OPTION_TO_VALUE = {
-    "low": 3,
-    "medium": 4,
-    "high": 5,
-    "paused": 6,
+OPTION_TO_WRITE_VALUE = {
+    "low": "H3L252",
+    "medium": "H4L251",
+    "high": "H5L250",
+    "paused": "H6L249",
 }
-VALUE_TO_OPTION = {value: option for option, value in OPTION_TO_VALUE.items()}
+READ_VALUE_TO_OPTION = {
+    3: "low",
+    4: "medium",
+    5: "high",
+    6: "paused",
+}
 
 FAN_LEVEL = SelectEntityDescription(
     key="fan_level",
@@ -46,7 +51,7 @@ class OxygenFanLevelSelect(OxygenEntity, SelectEntity):
     """Select the controller's low/medium/high/pause state."""
 
     entity_description = FAN_LEVEL
-    _attr_options = list(OPTION_TO_VALUE)
+    _attr_options = list(OPTION_TO_WRITE_VALUE)
 
     def __init__(self, coordinator: OxygenCoordinator, serial: str) -> None:
         super().__init__(coordinator, serial, "u81")
@@ -55,14 +60,14 @@ class OxygenFanLevelSelect(OxygenEntity, SelectEntity):
     def current_option(self) -> str | None:
         """Return the option represented by the controller bit mask."""
         try:
-            return VALUE_TO_OPTION.get(int(self.parameter_value))
+            return READ_VALUE_TO_OPTION.get(int(self.parameter_value))
         except (TypeError, ValueError):
             return None
 
     async def async_select_option(self, option: str) -> None:
         """Set a fan level and require a successful device response."""
         try:
-            value = OPTION_TO_VALUE[option]
+            value = OPTION_TO_WRITE_VALUE[option]
             await self.coordinator.async_write_parameter(self.serial, self.uid, value)
         except KeyError as err:
             raise HomeAssistantError(f"Unknown Oxygen fan level: {option}") from err
