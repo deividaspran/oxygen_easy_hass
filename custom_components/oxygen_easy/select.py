@@ -75,8 +75,8 @@ TIMED_MODE_READ_VALUE_TO_OPTION = {
 }
 
 TIMEZONE_MODE_OPTION_TO_WRITE_VALUE = {
-    "automatic": 0,
-    "manual": 1,
+    "automatic": "0",
+    "manual": "1",
 }
 TIMEZONE_MODE_READ_VALUE_TO_OPTION = {
     0: "automatic",

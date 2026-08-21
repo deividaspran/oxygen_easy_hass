@@ -137,14 +137,19 @@ class OxygenNumber(OxygenEntity, NumberEntity):
             return None
 
     async def async_set_native_value(self, value: float) -> None:
-        """Set a numeric value and require controller confirmation."""
-        write_value = int(value) if value.is_integer() else value
+        """Set a numeric value using the cloud protocol's string encoding."""
+        cached_value = int(value) if value.is_integer() else value
         try:
             await self.coordinator.async_write_parameter(
                 self.serial,
                 self.uid,
-                write_value,
-                cached_value=write_value,
+                encode_number_write_value(value),
+                cached_value=cached_value,
             )
         except OxygenMqttError as err:
             raise HomeAssistantError(str(err)) from err
+
+
+def encode_number_write_value(value: float) -> str:
+    """Encode a number as expected by Oxygen PARAMS_MODIFICATION."""
+    return str(int(value)) if value.is_integer() else str(value)

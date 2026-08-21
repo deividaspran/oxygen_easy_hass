@@ -46,6 +46,26 @@ def test_extract_values_from_notification() -> None:
     assert extract_values(response) == {"controller-1": {"u7074": 1}}
 
 
+def test_extract_values_ignores_modification_statuses() -> None:
+    """Write status codes must never become transient entity states."""
+    response = {
+        "transactionId": "3",
+        "operations": [
+            {
+                "name": "PARAMS_MODIFICATION",
+                "targets": [
+                    {
+                        "component": "controller-1",
+                        "parameters": {"u81": "0"},
+                    }
+                ],
+            }
+        ],
+    }
+
+    assert extract_values(response) == {}
+
+
 def test_modification_status() -> None:
     """Find a write status in the nested operation response."""
     response = {

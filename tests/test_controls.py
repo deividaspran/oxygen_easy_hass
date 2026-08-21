@@ -5,7 +5,7 @@ from custom_components.oxygen_easy.coordinator import (
     parse_alarm_code,
     parse_alarm_descriptions,
 )
-from custom_components.oxygen_easy.number import NUMBERS
+from custom_components.oxygen_easy.number import NUMBERS, encode_number_write_value
 from custom_components.oxygen_easy.select import (
     COMFORT_MODE_OPTION_TO_WRITE_VALUE,
     COMFORT_MODE_READ_VALUE_TO_OPTION,
@@ -57,8 +57,8 @@ def test_dashboard_selects_use_profile_masks() -> None:
         4: "airing",
     }
     assert TIMEZONE_MODE_OPTION_TO_WRITE_VALUE == {
-        "automatic": 0,
-        "manual": 1,
+        "automatic": "0",
+        "manual": "1",
     }
     assert TIMEZONE_MODE_READ_VALUE_TO_OPTION == {
         0: "automatic",
@@ -158,3 +158,10 @@ def test_number_ranges_match_live_controller_profile() -> None:
         "night_comfort_temperature": (8, 30, 1),
         "party_mode_duration": (1, 15, 1),
     }
+
+
+def test_number_writes_use_protocol_string_encoding() -> None:
+    """Editable numeric values must be strings in modification requests."""
+    assert encode_number_write_value(0.0) == "0"
+    assert encode_number_write_value(21.0) == "21"
+    assert encode_number_write_value(21.5) == "21.5"

@@ -27,6 +27,11 @@ def extract_values(document: Any) -> dict[str, dict[str, Any]]:
 
     def visit(node: Any) -> None:
         if isinstance(node, dict):
+            if node.get("name") in (
+                "PARAMS_MODIFICATION",
+                "SEQUENTIAL_PARAMS_MODIFICATION",
+            ):
+                return
             component = node.get("component")
             parameters = node.get("parameters")
             if isinstance(component, str) and isinstance(parameters, dict):
