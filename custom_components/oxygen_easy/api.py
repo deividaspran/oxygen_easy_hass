@@ -20,6 +20,7 @@ from .const import (
     API_HOST,
     API_STAGE,
     APP_ID,
+    ARCHIVES_API,
     CLIENT_ID,
     CREDENTIAL_REFRESH_MARGIN,
     IDENTITY_POOL_ID,
@@ -48,6 +49,7 @@ class OxygenCloudSession:
         self.username = username
         self._password = password
         self.identity_id: str | None = None
+        self.id_token: str | None = None
         self.credentials: dict[str, Any] | None = None
         self._lock = threading.Lock()
 
@@ -80,6 +82,7 @@ class OxygenCloudSession:
         try:
             cognito = Cognito(USER_POOL_ID, CLIENT_ID, username=self.username)
             cognito.authenticate(password=self._password)
+            self.id_token = cognito.id_token
             login_key = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
             logins = {login_key: cognito.id_token}
             identity = boto3.client(
@@ -148,3 +151,76 @@ class OxygenCloudSession:
         if not isinstance(result, dict):
             raise OxygenApiError("Installation details have an unexpected shape")
         return result
+
+    def component_profile(
+        self,
+        producer_code: str,
+        name: str,
+        hardware_version: str,
+        software_version: str,
+    ) -> dict[str, Any]:
+        """Get a component's web profile."""
+        parts = (producer_code, name, hardware_version, software_version)
+        encoded = "/".join(urllib.parse.quote(part, safe="") for part in parts)
+        result = self.signed_get(f"/v1/profiles/{encoded}/web/profile.json")
+        if not isinstance(result, dict):
+            raise OxygenApiError("Component profile has an unexpected shape")
+        return result
+
+    def component_translations(
+        self,
+        producer_code: str,
+        name: str,
+        hardware_version: str,
+        software_version: str,
+    ) -> dict[str, str]:
+        """Get a component's English web-profile translations."""
+        parts = (producer_code, name, hardware_version, software_version)
+        encoded = "/".join(urllib.parse.quote(part, safe="") for part in parts)
+        result = self.signed_get(f"/v1/profiles/{encoded}/web/trans_en.json")
+        if not isinstance(result, dict):
+            raise OxygenApiError("Component translations have an unexpected shape")
+        return {
+            str(key): str(value)
+            for key, value in result.items()
+            if isinstance(value, str)
+        }
+
+    def active_alarms(
+        self,
+        installation_id: str,
+        component_ids: list[str],
+    ) -> list[dict[str, Any]]:
+        """Get active alarms from the read-only Oxygen archive API."""
+        self.ensure_credentials()
+        if self.id_token is None:
+            raise OxygenAuthenticationError("Oxygen ID token is unavailable")
+        try:
+            response = requests.post(
+                f"{ARCHIVES_API}/alarms/values",
+                headers={
+                    "Authorization": f"Bearer {self.id_token}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "filter": "active",
+                    "installation": installation_id,
+                    "components": component_ids,
+                },
+                timeout=REQUEST_TIMEOUT,
+            )
+        except requests.RequestException as err:
+            raise OxygenApiError("Could not reach the Oxygen alarms API") from err
+        if response.status_code in (401, 403):
+            raise OxygenAuthenticationError("Oxygen alarms credentials were rejected")
+        if not response.ok:
+            raise OxygenApiError(
+                f"Oxygen alarms API returned HTTP {response.status_code}"
+            )
+        try:
+            result = response.json()
+        except ValueError as err:
+            raise OxygenApiError("Oxygen alarms API returned invalid JSON") from err
+        if not isinstance(result, list):
+            raise OxygenApiError("Oxygen alarms API returned an unexpected shape")
+        return [item for item in result if isinstance(item, dict)]

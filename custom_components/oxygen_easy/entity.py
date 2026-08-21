@@ -25,9 +25,17 @@ class OxygenEntity(CoordinatorEntity[OxygenCoordinator]):
         """Describe the physical ventilation controller."""
         component = self.coordinator.data.components[self.serial]
         installation = self.coordinator.data.installations[component.installation_id]
+        if component.is_gateway and installation.custom_name:
+            device_name = f"{installation.custom_name} internet module"
+        else:
+            device_name = (
+                component.custom_name
+                or installation.custom_name
+                or component.display_name
+            )
         return DeviceInfo(
             identifiers={(DOMAIN, self.serial)},
-            name=installation.custom_name or component.display_name,
+            name=device_name,
             manufacturer=component.manufacturer,
             model=component.component_type,
             hw_version=component.hardware_version,

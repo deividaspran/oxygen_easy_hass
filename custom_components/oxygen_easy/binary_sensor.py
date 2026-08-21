@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -22,6 +23,8 @@ class OxygenBinarySensorDescription(BinarySensorEntityDescription):
     """Describe a boolean Oxygen parameter."""
 
     uid: str
+    bit_mask: int | None = None
+    unique_id_suffix: str | None = None
 
 
 BINARY_SENSORS = (
@@ -32,16 +35,22 @@ BINARY_SENSORS = (
         icon="mdi:valve-open",
     ),
     OxygenBinarySensorDescription(
-        key="automatic_mode",
-        translation_key="automatic_mode",
-        uid="u7073",
-        icon="mdi:autorenew",
+        key="supply_filter_replacement",
+        translation_key="supply_filter_replacement",
+        uid="u6832",
+        bit_mask=16,
+        unique_id_suffix="supply_filter_replacement",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        icon="mdi:air-filter",
     ),
     OxygenBinarySensorDescription(
-        key="schedule_active",
-        translation_key="schedule_active",
-        uid="u6630",
-        icon="mdi:calendar-clock",
+        key="extract_filter_replacement",
+        translation_key="extract_filter_replacement",
+        uid="u6832",
+        bit_mask=32,
+        unique_id_suffix="extract_filter_replacement",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        icon="mdi:air-filter",
     ),
 )
 
@@ -74,9 +83,18 @@ class OxygenBinarySensor(OxygenEntity, BinarySensorEntity):
     ) -> None:
         super().__init__(coordinator, serial, description.uid)
         self.entity_description = description
+        if description.unique_id_suffix is not None:
+            self._attr_unique_id = f"{serial}_{description.unique_id_suffix}"
 
     @property
     def is_on(self) -> bool | None:
-        """Return the latest boolean state."""
+        """Return the latest boolean or bit state."""
         value = self.parameter_value
-        return bool(value) if value is not None else None
+        if value is None:
+            return None
+        if self.entity_description.bit_mask is None:
+            return bool(value)
+        try:
+            return bool(int(value) & self.entity_description.bit_mask)
+        except (TypeError, ValueError):
+            return None

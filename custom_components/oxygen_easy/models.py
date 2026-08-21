@@ -28,8 +28,11 @@ class OxygenComponent:
     component_type: str
     custom_name: str
     manufacturer: str = "Oxygen"
+    producer_code: str | None = None
+    profile_name: str | None = None
     hardware_version: str | None = None
     software_version: str | None = None
+    is_gateway: bool = False
 
     @property
     def display_name(self) -> str:

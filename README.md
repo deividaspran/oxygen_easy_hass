@@ -14,9 +14,20 @@ cloud path as the current Oxygen Easy app.
 - Outdoor, supply, extract, and exhaust temperatures
 - Humidity, CO₂, supply/extract airflow, and supply/extract fan output
 - Supply/extract filter condition and bypass position
-- Bypass, automatic-mode, and schedule status
+- Bypass status
 - Power switch
-- Low, medium, high, and paused fan-level select
+- Low, medium, high, and paused fan-level control
+- Manual/schedule operating mode and timed away/party/airing modes
+- Day/night/schedule comfort mode with day and night temperature setpoints
+- Automatic, fireplace, and supported Boost 1 switches
+- Unit operating status, lead/heat-exchanger temperatures, airflow setpoints,
+  and party-mode time remaining
+- Internet-gateway date/time, temperature, humidity, timezone mode, button
+  brightness, and button/alarm volume
+- Supply/extract filter-replacement problem sensors and a persistent Home
+  Assistant notification when the controller requests replacement
+- Persistent notifications for active controller and internet-gateway alarms,
+  using the model profile's English alarm descriptions
 - Credential reauthentication and redacted diagnostics
 
 ## Installation
@@ -51,10 +62,16 @@ same UI configuration steps.
 - Credentials are stored in Home Assistant's config-entry storage. Passwords,
   Cognito tokens, AWS secrets, and signed MQTT URLs are not logged or included in
   diagnostics.
-- Power and fan-level writes use the app's `PARAMS_MODIFICATION` protocol and
+- Controls use the app's profile-defined `PARAMS_MODIFICATION` masks and
   require a controller success status before local state changes.
+- Sensors with a measurement state class are recorded by Home Assistant and can
+  be graphed from the entity History view or dashboard. History begins when Home
+  Assistant starts recording the entity; the Oxygen cloud archive is not
+  imported. The integration exposes every numeric/status series used by the
+  Oxygen chart that is available in the live controller snapshot.
 - Filter values are exposed as **filter condition** because the cloud reports a
-  percentage but does not label its direction unambiguously in the protocol.
+  percentage whose direction is not labeled reliably. Replacement alerts use
+  the controller's separate supply/extract replacement flags instead.
 - This project is not affiliated with Oxygen or Plum.
 - The OXYGEN name and logo are trademarks of OXYGEN GROUP, UAB. The bundled
   brand assets are used only to identify compatible products.

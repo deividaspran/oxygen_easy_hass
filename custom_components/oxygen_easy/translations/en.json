@@ -12,7 +12,9 @@
       "reauth_confirm": {
         "title": "Reconnect Oxygen Easy",
         "description": "Enter the current Oxygen Easy password.",
-        "data": {"password": "Password"}
+        "data": {
+          "password": "Password"
+        }
       }
     },
     "error": {
@@ -30,9 +32,23 @@
     "binary_sensor": {
       "automatic_mode": {"name": "Automatic mode"},
       "bypass_active": {"name": "Bypass active"},
+      "extract_filter_replacement": {
+        "name": "Extract filter replacement required"
+      },
+      "supply_filter_replacement": {
+        "name": "Supply filter replacement required"
+      },
       "schedule_active": {"name": "Schedule active"}
     },
     "select": {
+      "comfort_mode": {
+        "name": "Comfort mode",
+        "state": {
+          "schedule": "Schedule",
+          "day": "Day",
+          "night": "Night"
+        }
+      },
       "fan_level": {
         "name": "Fan level",
         "state": {
@@ -41,23 +57,94 @@
           "high": "High",
           "paused": "Paused"
         }
+      },
+      "gateway_timezone_mode": {
+        "name": "Gateway timezone mode",
+        "state": {
+          "automatic": "Based on address",
+          "manual": "Manual"
+        }
+      },
+      "operating_mode": {
+        "name": "Operating mode",
+        "state": {
+          "manual": "Manual",
+          "schedule": "Schedule"
+        }
+      },
+      "timed_mode": {
+        "name": "Timed mode",
+        "state": {
+          "off": "Off",
+          "away": "Away",
+          "party": "Party",
+          "airing": "Airing"
+        }
       }
     },
+    "number": {
+      "day_comfort_temperature": {"name": "Day comfort temperature"},
+      "gateway_alarm_volume": {"name": "Gateway alarm volume"},
+      "gateway_button_brightness": {"name": "Gateway button brightness"},
+      "gateway_button_volume": {"name": "Gateway button volume"},
+      "night_comfort_temperature": {"name": "Night comfort temperature"},
+      "party_mode_duration": {"name": "Party mode duration"}
+    },
     "sensor": {
+      "after_heat_exchanger_temperature": {
+        "name": "Temperature after heat exchanger"
+      },
       "bypass_opening": {"name": "Bypass opening"},
       "co2": {"name": "CO₂"},
       "exhaust_temperature": {"name": "Exhaust temperature"},
       "extract_airflow": {"name": "Extract airflow"},
+      "extract_airflow_setpoint": {"name": "Extract airflow setpoint"},
       "extract_fan": {"name": "Extract fan"},
       "extract_filter": {"name": "Extract filter condition"},
       "extract_temperature": {"name": "Extract temperature"},
+      "ground_heat_exchanger_temperature": {
+        "name": "Ground heat exchanger temperature"
+      },
+      "gateway_date_time": {"name": "Gateway date and time"},
+      "gateway_humidity": {"name": "Gateway humidity"},
+      "gateway_temperature": {"name": "Gateway temperature"},
       "humidity": {"name": "Humidity"},
+      "lead_temperature": {"name": "Lead temperature"},
       "outdoor_temperature": {"name": "Outdoor temperature"},
+      "party_time_remaining": {"name": "Party time remaining"},
       "supply_airflow": {"name": "Supply airflow"},
+      "supply_airflow_setpoint": {"name": "Supply airflow setpoint"},
       "supply_fan": {"name": "Supply fan"},
       "supply_filter": {"name": "Supply filter condition"},
-      "supply_temperature": {"name": "Supply temperature"}
+      "supply_temperature": {"name": "Supply temperature"},
+      "unit_status": {
+        "name": "Unit status",
+        "state": {
+          "no_status": "No status",
+          "off": "Off",
+          "standby": "Standby",
+          "normal": "Normal work",
+          "heating": "Heating",
+          "cooling": "Cooling",
+          "exchanger_dewatering": "Heat exchanger dewatering",
+          "exchanger_cleaning": "Heat exchanger cleaning",
+          "airing": "Airing",
+          "heater_cooling": "Heater cooling",
+          "filter_test": "Filter test",
+          "boost": "Boost",
+          "defrosting": "Defrosting",
+          "start_delay": "Start delay",
+          "heat_recovery": "Heat recovery",
+          "cold_recovery": "Cold recovery",
+          "service_stop": "Service stop"
+        }
+      }
     },
-    "switch": {"power": {"name": "Power"}}
+    "switch": {
+      "automatic_mode": {"name": "Automatic mode"},
+      "boost_1": {"name": "Boost 1"},
+      "fireplace_mode": {"name": "Fireplace mode"},
+      "power": {"name": "Power"}
+    }
   }
 }
