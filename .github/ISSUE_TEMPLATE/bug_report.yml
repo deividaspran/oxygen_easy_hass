@@ -20,7 +20,7 @@ body:
     id: integration_version
     attributes:
       label: Oxygen Easy integration version
-      placeholder: 0.1.2
+      placeholder: 0.2.0
     validations:
       required: true
   - type: input
