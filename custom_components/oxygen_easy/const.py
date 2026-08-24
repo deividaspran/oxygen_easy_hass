@@ -3,7 +3,7 @@
 from datetime import timedelta
 
 DOMAIN = "oxygen_easy"
-PLATFORMS = ["binary_sensor", "number", "select", "sensor", "switch"]
+PLATFORMS = ["binary_sensor", "button", "number", "select", "sensor", "switch"]
 
 CONF_USERNAME = "username"
 CONF_PASSWORD = "password"

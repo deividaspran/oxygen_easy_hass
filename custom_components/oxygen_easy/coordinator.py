@@ -330,8 +330,9 @@ class OxygenCoordinator(DataUpdateCoordinator[OxygenCoordinatorData]):
         value: Any,
         *,
         cached_value: Any | None = None,
+        update_cache: bool = True,
     ) -> None:
-        """Write one parameter and accept only documented success statuses."""
+        """Write a parameter, optionally caching a persistent value."""
         component = self.data.components[serial]
         response = await self.mqtt.async_send_operation(
             component.installation_id,
@@ -345,10 +346,13 @@ class OxygenCoordinator(DataUpdateCoordinator[OxygenCoordinatorData]):
             raise OxygenMqttError(
                 f"Oxygen controller rejected {uid} (status {status or 'missing'})"
             )
-        self._merge_values(
-            {serial: {uid: value if cached_value is None else cached_value}}
-        )
-        self.async_set_updated_data(self.data.clone())
+        if update_cache:
+            self._merge_values(
+                {serial: {uid: value if cached_value is None else cached_value}}
+            )
+            self.async_set_updated_data(self.data.clone())
+        else:
+            await self.async_request_refresh()
 
     async def async_shutdown(self) -> None:
         """Release the MQTT connection."""

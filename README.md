@@ -24,7 +24,7 @@ cloud path as the current Oxygen Easy app.
   and party-mode time remaining
 - Internet-gateway date/time, temperature, humidity, timezone mode, button
   brightness, and button/alarm volume
-- Supply/extract filter-replacement problem sensors and a persistent Home
+- Supply/extract filter-replacement problem sensors, counter-reset buttons, and a persistent Home
   Assistant notification when the controller requests replacement
 - Persistent notifications for active controller and internet-gateway alarms,
   using the model profile's English alarm descriptions
@@ -72,6 +72,9 @@ same UI configuration steps.
 - Filter values are exposed as **filter condition** because the cloud reports a
   percentage whose direction is not labeled reliably. Replacement alerts use
   the controller's separate supply/extract replacement flags instead.
+- Replace the physical filter before pressing its reset button. Resetting only
+  clears the controller's filter-monitoring counter; it does not make a used
+  filter safe to continue using.
 - This project is not affiliated with Oxygen or Plum.
 - The OXYGEN name and logo are trademarks of OXYGEN GROUP, UAB. The bundled
   brand assets are used only to identify compatible products.

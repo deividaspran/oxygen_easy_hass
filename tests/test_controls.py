@@ -1,5 +1,6 @@
 """Controller profile mapping tests for Oxygen Easy."""
 
+from custom_components.oxygen_easy.button import FILTER_RESET_BUTTONS
 from custom_components.oxygen_easy.coordinator import (
     filter_replacement_parts,
     parse_alarm_code,
@@ -104,6 +105,16 @@ def test_filter_replacement_flags_are_exact() -> None:
         "extraction air filter",
     )
     assert filter_replacement_parts(None) is None
+
+
+def test_filter_reset_buttons_use_vendor_profile_masks() -> None:
+    """Filter reset buttons must use the commands supplied by Oxygen."""
+    commands = {item.key: item.command for item in FILTER_RESET_BUTTONS}
+    assert commands == {
+        "reset_supply_filter": "H2L253",
+        "reset_extract_filter": "H3L252",
+        "reset_both_filters": "H7L248",
+    }
 
 
 def test_alarm_profile_descriptions_are_translated() -> None:

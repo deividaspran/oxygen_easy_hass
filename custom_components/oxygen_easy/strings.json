@@ -29,6 +29,11 @@
     }
   },
   "entity": {
+    "button": {
+      "reset_supply_filter": {"name": "Reset supply filter counter"},
+      "reset_extract_filter": {"name": "Reset extract filter counter"},
+      "reset_both_filters": {"name": "Reset both filter counters"}
+    },
     "binary_sensor": {
       "automatic_mode": {"name": "Automatic mode"},
       "bypass_active": {"name": "Bypass active"},
